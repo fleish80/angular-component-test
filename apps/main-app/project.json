@@ -1,0 +1,101 @@
+{
+  "name": "main-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "df",
+  "sourceRoot": "apps/main-app/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/main-app",
+        "index": "apps/main-app/src/index.html",
+        "browser": "apps/main-app/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/main-app/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/main-app/public"
+          }
+        ],
+        "styles": ["apps/main-app/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "main-app:build:production"
+        },
+        "development": {
+          "buildTarget": "main-app:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "main-app:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "main": "apps/main-app/src/test.ts",
+        "tsConfig": "apps/main-app/tsconfig.spec.json",
+        "karmaConfig": "karma.conf.js",
+        "polyfills": ["zone.js"]
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "main-app:build",
+        "port": 4200,
+        "staticFilePath": "dist/apps/main-app/browser",
+        "spa": true
+      }
+    },
+    "component-test": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/main-app/cypress.config.ts",
+        "testingType": "component",
+        "skipServe": true,
+        "devServerTarget": "main-app:build"
+      }
+    }
+  }
+}
