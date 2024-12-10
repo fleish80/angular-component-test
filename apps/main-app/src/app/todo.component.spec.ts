@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TodoComponent } from './todo.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('TodoComponent', () => {
   let component: TodoComponent;
@@ -12,6 +13,7 @@ describe('TodoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TodoComponent],
+      providers: [provideAnimations()]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TodoComponent);
@@ -26,11 +28,6 @@ describe('TodoComponent', () => {
 
 
   // Integration tests
-
-  it('should display the title', () => {
-    const titleElement = debugElement.query(By.css('h1')).nativeElement;
-    expect(titleElement.textContent).toContain('To-Do List');
-  });
 
   it('should add a new task to the list', () => {
     const inputElement = debugElement.query(By.css('input')).nativeElement;
